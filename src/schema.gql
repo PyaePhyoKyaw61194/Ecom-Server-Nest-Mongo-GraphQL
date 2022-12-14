@@ -1,0 +1,401 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AddressModel {
+  fullAddress: String!
+  region: RegionModel!
+  township: String!
+}
+
+input CreateAddressInput {
+  fullAddress: String!
+  region: CreateRegionInput!
+  township: String!
+}
+
+input CreateDeliverCustomerInput {
+  address: CreateAddressInput!
+  name: String!
+  phone: String!
+  secondaryPhone: String
+}
+
+input CreateOrderInput {
+  customerRemark: String
+  deliveredDate: String
+  deliveryFee: Float
+  discountFee: Float
+  internalRemark: String
+  orderCustomer: String!
+  orderDate: String!
+  orderItems: [CreateOrderItemInput!]!
+  paymentType: String!
+  status: String!
+  tags: [String]
+  toDeliverCustomer: CreateDeliverCustomerInput!
+}
+
+input CreateOrderItemInput {
+  boughtPrice: Float!
+  boughtQuantity: Int!
+  productId: String!
+  productName: String!
+}
+
+input CreateProductInput {
+  code: String!
+  description: String
+  images: [String!]
+  isAvailable: Boolean!
+  name: String!
+  price: Float!
+  quantity: Float!
+  tags: [String!]!
+}
+
+type CreateProductModel {
+  _id: String!
+  code: String!
+  description: String
+  images: [String!]
+  isAvailable: Boolean!
+  name: String!
+  price: Float!
+  quantity: Float!
+  tags: [TagModel!]!
+}
+
+input CreateProfileInput {
+  address: String
+  facebook: SocialMediaDataInput
+  name: String!
+  phone: String!
+}
+
+input CreateRegionInput {
+  code: String!
+  regionId: String!
+}
+
+input CreateSettingInput {
+  color: String!
+  name: String!
+}
+
+type CreateSettingModel {
+  _id: String!
+  color: String!
+  deletedAt: DateTime
+  name: String!
+}
+
+input CreateTagInput {
+  color: String
+  name: String!
+  type: String
+}
+
+type CreateTagModel {
+  _id: String!
+  color: String
+  deletedAt: DateTime
+  name: String!
+  type: String
+}
+
+input CreateUserInput {
+  code: String!
+  email: String
+  password: String
+  profile: CreateProfileInput!
+  role: String
+}
+
+type CreateUserModel {
+  _id: String
+  code: String
+  email: String
+  profile: ProfileModel
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input DeleteUserInput {
+  _id: String!
+}
+
+input GetOrdersInput {
+  deliveredDate: String
+  fromOrderDate: String
+  orderSortBy: OrderSortBy
+  page: Int
+  paymentId: String
+  productId: String
+  search: String
+  sortOrder: SortOrder
+  statusId: String
+  toOrderDate: String
+  userId: String
+}
+
+input GetProductsInput {
+  code: String
+  name: String
+  page: Int
+  sortBy: ProductSortBy
+  sortOrder: SortOrder
+  tagId: String
+}
+
+input GetUsersInput {
+  page: Int = 1
+  search: String
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+type LoginUserModel {
+  accessToken: String!
+  user: UserModel!
+}
+
+type Mutation {
+  createOrder(input: CreateOrderInput!): OrderModel!
+  createProduct(input: CreateProductInput!): CreateProductModel!
+  createSetting(input: CreateSettingInput!): CreateSettingModel!
+  createTag(input: CreateTagInput!): CreateTagModel!
+  createUser(input: CreateUserInput!): CreateUserModel!
+  deleteUser(input: DeleteUserInput!): UserModel!
+  login(input: LoginUserInput!): LoginUserModel!
+  removeOrder(id: String!): OrderModel!
+  removeProduct(id: String!): CreateProductModel!
+  removeSetting(id: String!): CreateSettingModel!
+  removeTag(id: String!): TagModel!
+  softDeleteUser(input: DeleteUserInput!): SoftDeleteUserModel!
+  updateOrder(input: UpdateOrderInput!): OrderModel!
+  updateOrderItems(input: UpdateOrderItemsInput!): OrderModel!
+  updateProduct(input: UpdateProductInput!): CreateProductModel!
+  updateSetting(input: UpdateSettingInput!): CreateSettingModel!
+  updateTag(input: UpdateTagInput!): CreateTagModel!
+  updateUser(input: updateUserInput!): UserModel!
+  validateToken(input: String!): Boolean!
+}
+
+type OrderItemModel {
+  boughtPrice: Float!
+  boughtQuantity: Int!
+  productId: String!
+  productName: String!
+  tags: [TagModel!]!
+}
+
+type OrderModel {
+  _id: String!
+  customerRemark: String
+  deliveredDate: DateTime
+  deliveryFee: Float
+  discountFee: Float
+  internalRemark: String
+  orderCode: String!
+  orderCustomer: UserModel!
+  orderDate: DateTime!
+  orderItems: [OrderItemModel!]!
+  paymentType: String!
+  status: StatusModel!
+  tags: [TagModel]
+  toDeliverCustomer: ToDeliverCustomerModel!
+}
+
+enum OrderSortBy {
+  DELIVEREDDATE
+  ORDERCODE
+  ORDERCUSTOMER
+  ORDERDATE
+  ORDERITEMS
+  PAYMENT
+  TODELIVERCUSTOMER
+  UpdatedAt
+}
+
+input PaginationInput {
+  limit: Float
+  search: String
+  skip: Float
+}
+
+type ProductModel {
+  _id: String!
+  code: String!
+  description: String
+  images: [String!]
+  isAvailable: Boolean!
+  name: String!
+  price: Float!
+  quantity: Float!
+  tags: [TagModel!]!
+}
+
+enum ProductSortBy {
+  IsAvailable
+  NAME
+  PRICE
+  QUANTITY
+  UpdatedAt
+}
+
+type ProfileModel {
+  address: String
+  facebook: SocialMediaDataModel
+  name: String!
+  phone: String!
+}
+
+type Query {
+  findProductByCode(code: String!): CreateProductModel!
+  findProductById(id: String!): CreateProductModel!
+  findProductByName(name: String!): CreateProductModel!
+  findSetting(id: String!): SettingModel!
+  findTag(id: String!): TagModel!
+  me: LoginUserModel!
+  order(id: String!): OrderModel!
+  orders(input: GetOrdersInput!): [OrderModel!]!
+  products(input: GetProductsInput!): [ProductModel!]!
+  roles: [RoleModel!]!
+  settings: [SettingModel!]!
+  tags(input: PaginationInput!): TagPaginationModel!
+  user(id: String!): UserModel!
+  users(input: GetUsersInput!): [UserModel!]!
+  usersByName: [UserModel!]!
+}
+
+type RegionModel {
+  code: String!
+  regionId: String!
+}
+
+type RoleModel {
+  _id: String
+  description: String!
+  name: String!
+}
+
+type SettingModel {
+  _id: String!
+  color: String!
+  deletedAt: DateTime
+  name: String!
+}
+
+input SocialMediaDataInput {
+  profileUrl: String
+  userId: String
+  userName: String
+}
+
+type SocialMediaDataModel {
+  profileUrl: String
+  userId: String
+  userName: String
+}
+
+type SoftDeleteUserModel {
+  message: String!
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+type StatusModel {
+  _id: String!
+  color: String!
+  name: String!
+}
+
+type TagModel {
+  _id: String!
+  color: String
+  deletedAt: DateTime
+  name: String!
+  type: String
+}
+
+type TagPaginationModel {
+  data: [TagModel!]!
+  total: Float
+}
+
+type ToDeliverCustomerModel {
+  address: AddressModel!
+  name: String!
+  phone: String!
+  secondaryPhone: String
+}
+
+input UpdateOrderInput {
+  _id: String!
+  customerRemark: String
+  deliveredDate: DateTime
+  deliveryFee: Float
+  discountFee: Float
+  internalRemark: String
+  orderDate: DateTime
+  paymentType: String
+  status: String
+  tags: [String]
+  toDeliverCustomer: CreateDeliverCustomerInput
+}
+
+input UpdateOrderItemsInput {
+  orderId: String!
+  orderItems: [CreateOrderItemInput!]!
+}
+
+input UpdateProductInput {
+  _id: String!
+  code: String
+  description: String
+  images: [String!]
+  isAvailable: Boolean
+  name: String
+  price: Float
+  quantity: Float
+  tags: [String!]
+}
+
+input UpdateSettingInput {
+  _id: String!
+  color: String
+  name: String
+}
+
+input UpdateTagInput {
+  _id: String!
+  color: String
+  name: String
+  type: String
+}
+
+type UserModel {
+  _id: String
+  code: String
+  email: String
+  profile: ProfileModel
+}
+
+input updateUserInput {
+  _id: String!
+  code: String
+  email: String
+  password: String
+  profile: CreateProfileInput
+  role: String
+}
