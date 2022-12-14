@@ -1,3 +1,6 @@
+#About
+This is the prototype model for E-commerce server with NoSQL approach.
+
 # Tech Stack
 
 - Nest JS
